@@ -114,9 +114,17 @@ _rawdisk=$( echo $_udisk | awk 'sub("..$", "")' | sed 's/disk/rdisk/')
 echo "Unmounting Disk"
 diskutil unmount $_udisk
 
+
+DD_BS_VALUE=1
+# Check if a second script parameter exist and set it to the DD_BS_VALUE var
+if [ $# -eq 2 ]; then
+  if [ ! -z "$2" ]; then
+    DD_BS_VALUE=$2
+  fi
+fi
 echo "Writing image"
 echo "Ctrl+T to see progress.."
-sudo dd bs=1m if=${DISTRO} of=${_rawdisk}
+sudo dd bs=${DD_BS_VALUE}m if=${DISTRO} of=${_rawdisk}
 
 # Eject disk
 echo "Ejecting Disk"
